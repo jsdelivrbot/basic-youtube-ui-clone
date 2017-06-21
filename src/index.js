@@ -16,7 +16,10 @@ const API_KEY = Config.API_KEY;
 // Create a new component. This compoenet should produce some HTML
 
 const App = () => {
-  return <div>Hello World <SearchBar /></div>
+  return (
+    <div>
+    <SearchBar />
+  </div>)
 }
 
 // Take this component's generated HTML and put it on the page
