@@ -5,6 +5,7 @@ import VideoList from './components/video_list.js'
 import VideoDetail from './components/video_detail.js'
 import Config from './config.js';
 import YTSearch from 'youtube-api-search';
+import _ from 'lodash';
 
 // You'll need to get your own API key and put it in a config.js file ...
 // config.js:
@@ -15,7 +16,6 @@ import YTSearch from 'youtube-api-search';
 //
 
 const API_KEY = Config.API_KEY;
-
 
 // Create a new component. This compoenet should produce some HTML
 
@@ -33,7 +33,7 @@ class App extends Component {
   }
 
   videoSearch(term){
-    YTSearch({key: API_KEY, term : term}, (videos) => {
+    YTSearch({key: API_KEY, term : term}, videos => {
       this.setState({
         videos:videos,
         selectedVideo : videos[0]
@@ -41,11 +41,12 @@ class App extends Component {
     });
   }
 
-
   render() {
+
+    const videoSearch = _.debounce(term => {this.videoSearch(term)}, 300);
     return (
       <div>
-      <SearchBar onSearchTermChange={term => this.videoSearch(term)}/>
+      <SearchBar onSearchTermChange={videoSearch}/>
       <VideoDetail video={this.state.selectedVideo}/>
       <VideoList
         onVideoSelect={selectedVideo=>this.setState({selectedVideo})}
